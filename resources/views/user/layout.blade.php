@@ -65,7 +65,7 @@
         </div>
     </footer>
 
-    <audio id="beep" src="https://actions.google.com/sounds/v1/alarms/medium_bell_ringing_near.ogg"></audio>
+    <audio id="beep" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
 
     @stack('scripts')
 </body>

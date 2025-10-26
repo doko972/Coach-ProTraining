@@ -96,6 +96,7 @@
 
                     <div class="workout-actions">
                         <button class="btn-save" onclick="saveWorkout()">Sauvegarder</button>
+                        {{-- <button onclick="openChronoModal()" class="btn-chrono">⏱️ Chronomètre</button> --}}
                         <button class="btn-reset" onclick="resetWorkout()">Réinitialiser</button>
                         <button class="btn-export" onclick="exportWorkout()">Exporter</button>
                     </div>
@@ -131,14 +132,290 @@
                 </div>
             </div>
         </div>
+        <!-- Bouton flottant Chronomètre -->
+        <button onclick="openChronoModal()" class="floating-chrono-btn" id="floatingChronoBtn"
+            title="Ouvrir le chronomètre">
+            <span class="floating-icon" id="floatingIcon">⏱️</span>
+            <span class="floating-text" id="floatingText">Chrono</span>
+            <span class="floating-timer" id="floatingTimer" style="display: none;">00:00</span>
+        </button>
+
+        <!-- Modal Chronomètre -->
+        <div id="chronoModal" class="chrono-modal" style="display: none;">
+            <div class="chrono-modal-overlay" onclick="closeChronoModal()"></div>
+            <div class="chrono-modal-content">
+                <div class="chrono-modal-header">
+                    <h3>⏱️ Chronomètre de Repos</h3>
+                    <button onclick="closeChronoModal()" class="chrono-close-btn">✕</button>
+                </div>
+
+                <div class="chrono-modal-body">
+                    <!-- Timer Display -->
+                    <div class="chrono-display">
+                        <div id="modalTimerDisplay" class="timer-display">00:00</div>
+                        <div id="modalTimerStatus" class="timer-status">Prêt</div>
+                    </div>
+
+                    <!-- Boutons de contrôle -->
+                    <div class="chrono-controls">
+                        <button onclick="modalStartTimer()" id="modalStartBtn" class="chrono-btn chrono-btn-start">▶
+                            Démarrer</button>
+                        <button onclick="modalPauseTimer()" id="modalPauseBtn" class="chrono-btn chrono-btn-pause"
+                            style="display: none;">⏸ Pause</button>
+                        <button onclick="modalResumeTimer()" id="modalResumeBtn" class="chrono-btn chrono-btn-resume"
+                            style="display: none;">▶ Reprendre</button>
+                        <button onclick="modalStopTimer()" id="modalStopBtn" class="chrono-btn chrono-btn-stop">⏹
+                            Stop</button>
+                    </div>
+
+                    <!-- Temps prédéfinis -->
+                    <div class="chrono-presets">
+                        <button onclick="modalSetTimer(30)" class="preset-btn">30s</button>
+                        <button onclick="modalSetTimer(45)" class="preset-btn">45s</button>
+                        <button onclick="modalSetTimer(60)" class="preset-btn">1min</button>
+                        <button onclick="modalSetTimer(90)" class="preset-btn">1m30</button>
+                        <button onclick="modalSetTimer(120)" class="preset-btn">2min</button>
+                        <button onclick="modalSetTimer(180)" class="preset-btn">3min</button>
+                    </div>
+
+                    <!-- Timer personnalisé -->
+                    <div class="chrono-custom">
+                        <input type="number" id="modalCustomMinutes" placeholder="Min" min="0" max="59"
+                            class="time-input">
+                        <span>:</span>
+                        <input type="number" id="modalCustomSeconds" placeholder="Sec" min="0" max="59"
+                            class="time-input">
+                        <button onclick="modalSetCustomTimer()" class="chrono-btn-custom">Définir</button>
+                    </div>
+
+                    <!-- Historique compact -->
+                    <div class="chrono-history-compact">
+                        <h4>Dernières séries</h4>
+                        <div id="modalHistory" class="history-list-compact"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-@push('scripts')
-    <script>
-        window.programData = @json($program);
-        window.currentWeekId = {{ $program->weeks->first()->id ?? 'null' }};
-        window.currentSessionId = {{ $program->weeks->first()->sessions->first()->id ?? 'null' }};
-        window.workoutData = {};
-    </script>
-@endpush
+    @push('scripts')
+        <script>
+            window.programData = @json($program);
+            window.currentWeekId = {{ $program->weeks->first()->id ?? 'null' }};
+            window.currentSessionId = {{ $program->weeks->first()->sessions->first()->id ?? 'null' }};
+            window.workoutData = {};
+
+            // ========================================
+            // CHRONOMÈTRE MODAL
+            // ========================================
+
+            let modalTimerInterval = null;
+            let modalTimeRemaining = 0;
+            let modalTimerDuration = 0;
+            let modalIsPaused = false;
+            let modalSetsHistory = [];
+
+            // Ouvrir la modal
+            function openChronoModal() {
+                document.getElementById('chronoModal').style.display = 'flex';
+                updateModalHistoryDisplay();
+            }
+
+            // Fermer la modal
+            function closeChronoModal() {
+                document.getElementById('chronoModal').style.display = 'none';
+                // Ne pas arrêter le timer si en cours
+            }
+
+            // Définir le temps
+            function modalSetTimer(seconds) {
+                modalStopTimer();
+                modalTimerDuration = seconds;
+                modalTimeRemaining = seconds;
+                updateModalTimerDisplay();
+                document.getElementById('modalTimerStatus').textContent = 'Prêt';
+            }
+
+            // Timer personnalisé
+            function modalSetCustomTimer() {
+                const minutes = parseInt(document.getElementById('modalCustomMinutes').value) || 0;
+                const seconds = parseInt(document.getElementById('modalCustomSeconds').value) || 0;
+                const totalSeconds = (minutes * 60) + seconds;
+
+                if (totalSeconds > 0) {
+                    modalSetTimer(totalSeconds);
+                    document.getElementById('modalCustomMinutes').value = '';
+                    document.getElementById('modalCustomSeconds').value = '';
+                }
+            }
+
+            // Démarrer le timer
+            function modalStartTimer() {
+                if (modalTimeRemaining === 0) {
+                    alert('⚠️ Définissez d\'abord un temps !');
+                    return;
+                }
+
+                document.getElementById('modalStartBtn').style.display = 'none';
+                document.getElementById('modalPauseBtn').style.display = 'inline-block';
+                document.getElementById('modalTimerStatus').textContent = 'En cours...';
+
+                modalIsPaused = false;
+
+                modalTimerInterval = setInterval(() => {
+                    if (!modalIsPaused) {
+                        modalTimeRemaining--;
+                        updateModalTimerDisplay();
+
+                        if (modalTimeRemaining <= 0) {
+                            modalTimerComplete();
+                        }
+                    }
+                }, 1000);
+            }
+
+            // Pause
+            function modalPauseTimer() {
+                modalIsPaused = true;
+                document.getElementById('modalPauseBtn').style.display = 'none';
+                document.getElementById('modalResumeBtn').style.display = 'inline-block';
+                document.getElementById('modalTimerStatus').textContent = 'En pause';
+            }
+
+            // Reprendre
+            function modalResumeTimer() {
+                modalIsPaused = false;
+                document.getElementById('modalResumeBtn').style.display = 'none';
+                document.getElementById('modalPauseBtn').style.display = 'inline-block';
+                document.getElementById('modalTimerStatus').textContent = 'En cours...';
+            }
+
+            // Stop
+            function modalStopTimer() {
+                clearInterval(modalTimerInterval);
+                modalTimerInterval = null;
+                modalIsPaused = false;
+                modalTimeRemaining = modalTimerDuration;
+
+                document.getElementById('modalStartBtn').style.display = 'inline-block';
+                document.getElementById('modalPauseBtn').style.display = 'none';
+                document.getElementById('modalResumeBtn').style.display = 'none';
+                document.getElementById('modalTimerStatus').textContent = 'Prêt';
+
+                updateModalTimerDisplay();
+            }
+
+            // Timer terminé
+            function modalTimerComplete() {
+                clearInterval(modalTimerInterval);
+                modalTimeRemaining = 0;
+                updateModalTimerDisplay();
+
+                document.getElementById('modalTimerStatus').textContent = '✅ Terminé !';
+                document.getElementById('modalStartBtn').style.display = 'inline-block';
+                document.getElementById('modalPauseBtn').style.display = 'none';
+                document.getElementById('modalResumeBtn').style.display = 'none';
+
+                // Son de notification
+                const beep = document.getElementById('beep');
+                if (beep) {
+                    beep.play().catch(e => console.log('Son non disponible'));
+                }
+
+                // Ajouter à l'historique
+                const now = new Date();
+                modalSetsHistory.unshift({
+                    duration: modalTimerDuration,
+                    time: now.toLocaleTimeString('fr-FR', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                });
+
+                // Garder seulement les 5 dernières
+                if (modalSetsHistory.length > 5) {
+                    modalSetsHistory = modalSetsHistory.slice(0, 5);
+                }
+
+                updateModalHistoryDisplay();
+
+                // Reset pour la prochaine série
+                modalTimeRemaining = modalTimerDuration;
+            }
+
+            // Mettre à jour l'affichage
+            function updateModalTimerDisplay() {
+                const minutes = Math.floor(modalTimeRemaining / 60);
+                const seconds = modalTimeRemaining % 60;
+                document.getElementById('modalTimerDisplay').textContent =
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            // Mettre à jour l'affichage
+            function updateModalTimerDisplay() {
+                const minutes = Math.floor(modalTimeRemaining / 60);
+                const seconds = modalTimeRemaining % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                document.getElementById('modalTimerDisplay').textContent = timeString;
+
+                // Mettre à jour le bouton flottant aussi
+                updateFloatingButton(timeString);
+            }
+
+            // Mettre à jour le bouton flottant
+            function updateFloatingButton(timeString) {
+                const floatingBtn = document.getElementById('floatingChronoBtn');
+                const floatingIcon = document.getElementById('floatingIcon');
+                const floatingText = document.getElementById('floatingText');
+                const floatingTimer = document.getElementById('floatingTimer');
+
+                if (!floatingBtn) return;
+
+                // Si le timer est en cours
+                if (modalTimerInterval !== null) {
+                    floatingIcon.style.display = 'none';
+                    floatingText.style.display = 'none';
+                    floatingTimer.style.display = 'block';
+                    floatingTimer.textContent = timeString;
+                    floatingBtn.classList.add('timer-active');
+                } else {
+                    floatingIcon.style.display = 'block';
+                    floatingText.style.display = 'block';
+                    floatingTimer.style.display = 'none';
+                    floatingBtn.classList.remove('timer-active');
+                }
+            }
+
+            // Mettre à jour l'historique
+            function updateModalHistoryDisplay() {
+                const historyDiv = document.getElementById('modalHistory');
+
+                if (modalSetsHistory.length === 0) {
+                    historyDiv.innerHTML =
+                        '<p style="color: #999; font-size: 0.9rem; text-align: center;">Aucune série enregistrée</p>';
+                    return;
+                }
+
+                historyDiv.innerHTML = modalSetsHistory.map((set, index) => {
+                    const minutes = Math.floor(set.duration / 60);
+                    const seconds = set.duration % 60;
+                    return `
+            <div class="history-item-compact">
+                <span class="history-number">#${index + 1}</span>
+                <span class="history-time">${minutes}:${seconds.toString().padStart(2, '0')}</span>
+                <span class="history-timestamp">${set.time}</span>
+            </div>
+        `;
+                }).join('');
+            }
+
+            // Fermer avec Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeChronoModal();
+                }
+            });
+        </script>
+    @endpush
 @endsection
