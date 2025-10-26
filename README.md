@@ -390,16 +390,20 @@ Accédez au dashboard admin via le lien "Admin" dans le menu ou directement :
 ## Captures d'écran
 
 ### Page d'accueil
-![Page d'accueil](docs/screenshots/welcome.png)
+<img width="723" height="907" alt="Capture d'écran 2025-10-26 191722" src="https://github.com/user-attachments/assets/01b90976-e6c1-4d80-9a73-5c82eb9e7bb7" />
 
 ### Dashboard Admin
-![Dashboard Admin](docs/screenshots/admin-dashboard.png)
+<img width="665" height="668" alt="Capture d'écran 2025-10-26 191802" src="https://github.com/user-attachments/assets/6efbcdbd-09a3-414f-a36a-1df97f839f42" />
 
-### Carnet d'entraînement
-![Carnet](docs/screenshots/carnet.png)
+### Calculateur du 1 RM
+<img width="651" height="367" alt="Capture d'écran 2025-10-26 191810" src="https://github.com/user-attachments/assets/0015bb03-694d-4f42-8ac0-ecad42a0412f" />
+
 
 ### Chronomètre
-![Chronomètre](docs/screenshots/chrono.png)
+<img width="640" height="487" alt="Capture d'écran 2025-10-26 191823" src="https://github.com/user-attachments/assets/304f58cc-359c-4950-87e8-e39c4c358e5d" />
+
+### Page d'inscription
+<img width="446" height="622" alt="Capture d'écran 2025-10-26 191733" src="https://github.com/user-attachments/assets/8e93f14c-8bcf-4521-a792-32e21a1deebf" />
 
 ---
 
