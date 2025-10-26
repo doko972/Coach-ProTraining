@@ -681,18 +681,28 @@ body {
     background: $bg-overlay;
     backdrop-filter: blur(10px);
     border-bottom: 2px solid $border-primary;
-    padding: 1rem;
+    // padding: 1rem;
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
 .nav-container {
-    max-width: 1200px;
-    margin: 0.5rem;
+    // max-width: 1200px;
+    margin: 0.5rem 1.5rem 0.5rem 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.nav-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff4500;
+  text-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+}
+.logo-img {
+  height: 60px;
+  width: auto;
 }
 
 .nav-logo h2 {
@@ -845,12 +855,6 @@ body {
     max-width: 100%;
     overflow: hidden;
 
-    &:hover {
-        border-color: $primary-color;
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px $shadow-primary;
-    }
-
     h2 {
         color: $primary-color;
         font-size: 1.8rem;
@@ -945,7 +949,7 @@ body {
     background: $bg-input;
     border: 1px solid $border-primary;
     border-radius: 10px;
-    padding: 1.5rem;
+    padding: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -1426,7 +1430,7 @@ body {
     .nav-menu {
         position: fixed;
         right: -100%;
-        top: 45px;
+        top: 60px;
         flex-direction: column;
         background: rgba(10, 0, 0, 0.98);
         width: 100%;

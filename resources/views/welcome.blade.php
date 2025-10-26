@@ -10,7 +10,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>Coach - Pro Training</h2>
+                <img src="{{ asset('images/logo.png') }}" alt="Coach - Pro Training" class="logo-img">
             </div>
             <ul class="nav-menu">
                 <li><a class="nav-link" href="{{ route('login') }}">Connexion</a></li>
