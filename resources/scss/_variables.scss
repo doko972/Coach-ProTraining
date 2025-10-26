@@ -1,0 +1,39 @@
+// Couleurs principales
+$primary-color: #ff4500;
+$primary-light: #ff6b35;
+$primary-dark: #cc3700;
+
+// Couleurs de fond
+$bg-dark: #1a0000;
+$bg-medium: #2d0a0a;
+$bg-black: #000000;
+
+// Couleurs de texte
+$text-white: #ffffff;
+$text-gray: #cccccc;
+$text-dark-gray: #666666;
+
+// Couleurs d'état
+$success-color: #00ff00;
+$success-dark: #00cc00;
+$warning-color: #ffaa00;
+$warning-dark: #ff8c00;
+$danger-color: #dc143c;
+$danger-dark: #b30000;
+$info-color: #00bfff;
+$info-dark: #0080ff;
+
+// Couleurs de bordure
+$border-primary: rgba(255, 69, 0, 0.3);
+$border-gray: #666666;
+
+// Couleurs de fond transparentes
+$bg-overlay: rgba(0, 0, 0, 0.8);
+$bg-card: rgba(255, 69, 0, 0.1);
+$bg-input: rgba(0, 0, 0, 0.5);
+$bg-dark-transparent: rgba(0, 0, 0, 0.3);
+$bg-light-transparent: rgba(255, 69, 0, 0.05);
+
+// Ombres
+$shadow-primary: rgba(255, 69, 0, 0.5);
+$shadow-dark: rgba(0, 0, 0, 0.9);
