@@ -41,6 +41,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Gestion des séances
     Route::resource('sessions', App\Http\Controllers\Admin\SessionController::class);
+
+    // Routes pour les semaines
+    Route::get('/weeks/create', [App\Http\Controllers\Admin\WeekController::class, 'create'])->name('weeks.create');
+    Route::post('/weeks', [App\Http\Controllers\Admin\WeekController::class, 'store'])->name('weeks.store');
+    Route::get('/weeks/{week}/edit', [App\Http\Controllers\Admin\WeekController::class, 'edit'])->name('weeks.edit');
+    Route::put('/weeks/{week}', [App\Http\Controllers\Admin\WeekController::class, 'update'])->name('weeks.update');
+    Route::delete('/weeks/{week}', [App\Http\Controllers\Admin\WeekController::class, 'destroy'])->name('weeks.destroy');
 });
 // Routes Utilisateur (protégées par authentification)
 Route::middleware('auth')->group(function () {

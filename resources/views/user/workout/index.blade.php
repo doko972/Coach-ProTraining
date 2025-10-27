@@ -13,9 +13,38 @@
                         <p style="margin-top: 1rem; color: #666;">Contactez votre coach pour obtenir un programme</p>
                     </div>
                 @else
-                    {{-- @php
-                    $program = $programs->first();
-                @endphp --}}
+                    <div class="program-selector">
+                        <label for="programSelect">
+                            <span class="selector-label">Programme actuel :</span>
+                        </label>
+                        <select id="programSelect" class="program-select" onchange="changeProgram(this.value)">
+                            @foreach ($programs as $prog)
+                                <option value="{{ $prog->id }}" {{ $prog->id == $program->id ? 'selected' : '' }}>
+                                    {{ $prog->name }} ({{ $prog->phase }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Stats -->
+                    {{-- <div class="workout-stats-card">
+                        <div class="stat-card-workout">
+                            <div class="stat-value" id="totalVolume">0</div>
+                            <div class="stat-label">Volume total (kg)</div>
+                        </div>
+                        <div class="stat-card-workout">
+                            <div class="stat-value" id="totalSessions">0</div>
+                            <div class="stat-label">Séances cette semaine</div>
+                        </div>
+                        <div class="stat-card-workout">
+                            <div class="stat-value" id="weekSessions">0/3</div>
+                            <div class="stat-label">Progression</div>
+                        </div>
+                        <div class="stat-card-workout">
+                            <div class="stat-value" id="progression">0%</div>
+                            <div class="stat-label">Objectif</div>
+                        </div>
+                    </div> --}}
 
                     <h2>{{ $program->name }}</h2>
 
@@ -204,6 +233,11 @@
             window.currentWeekId = {{ $program->weeks->first()->id ?? 'null' }};
             window.currentSessionId = {{ $program->weeks->first()->sessions->first()->id ?? 'null' }};
             window.workoutData = {};
+
+            // Changer de programme
+            function changeProgram(programId) {
+                window.location.href = `/carnet?program_id=${programId}`;
+            }
 
             // ========================================
             // CHRONOMÈTRE MODAL

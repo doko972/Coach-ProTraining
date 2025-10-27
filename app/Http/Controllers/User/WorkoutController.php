@@ -12,24 +12,39 @@ use Illuminate\Support\Facades\Auth;
 class WorkoutController extends Controller
 {
     // Page du carnet d'entraînement
-    public function index()
+    public function index(Request $request)
     {
-        $program = Program::where('is_active', true)
-            ->with([
-                'weeks' => function ($query) {
-                    $query->orderBy('week_number');
-                },
-                'weeks.sessions' => function ($query) {
-                    $query->orderBy('session_number');
-                },
-                'weeks.sessions.sessionExercises' => function ($query) {
-                    $query->orderBy('order');
-                },
-                'weeks.sessions.sessionExercises.exercise'
-            ])
-            ->first();
+        // Récupérer tous les programmes actifs
+        $programs = Program::where('is_active', true)
+            ->orderBy('name')
+            ->get();
 
-        return view('user.workout.index', compact('program'));
+        // Si aucun programme actif, rediriger avec message
+        if ($programs->isEmpty()) {
+            return redirect()->route('workout.index')->with('error', 'Aucun programme disponible.');
+        }
+
+        // Récupérer le programme sélectionné (via session ou URL)
+        $selectedProgramId = $request->get('program_id') ?? session('selected_program_id') ?? $programs->first()->id;
+
+        // Sauvegarder le choix en session
+        session(['selected_program_id' => $selectedProgramId]);
+
+        // Charger le programme avec toutes ses relations
+        $program = Program::with([
+            'weeks' => function ($query) {
+                $query->orderBy('week_number');
+            },
+            'weeks.sessions' => function ($query) {
+                $query->orderBy('session_number');
+            },
+            'weeks.sessions.sessionExercises' => function ($query) {
+                $query->orderBy('order');
+            },
+            'weeks.sessions.sessionExercises.exercise'
+        ])->findOrFail($selectedProgramId);
+
+        return view('user.workout.index', compact('program', 'programs'));
     }
 
     // Page chronomètre
