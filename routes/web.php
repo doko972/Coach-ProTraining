@@ -42,6 +42,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Gestion des séances
     Route::resource('sessions', App\Http\Controllers\Admin\SessionController::class);
 
+    // Gestion des assignations de programmes
+    Route::get('/user-programs', [App\Http\Controllers\Admin\UserProgramController::class, 'index'])->name('user-programs.index');
+    Route::post('/user-programs/assign', [App\Http\Controllers\Admin\UserProgramController::class, 'assign'])->name('user-programs.assign');
+    Route::post('/user-programs/remove', [App\Http\Controllers\Admin\UserProgramController::class, 'remove'])->name('user-programs.remove');
+    Route::post('/user-programs/set-current', [App\Http\Controllers\Admin\UserProgramController::class, 'setCurrent'])->name('user-programs.set-current');
+
     // Routes pour les semaines
     Route::get('/weeks/create', [App\Http\Controllers\Admin\WeekController::class, 'create'])->name('weeks.create');
     Route::post('/weeks', [App\Http\Controllers\Admin\WeekController::class, 'store'])->name('weeks.store');

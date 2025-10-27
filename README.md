@@ -174,6 +174,10 @@ CREATE DATABASE coach_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```bash
 php artisan migrate --seed
 ```
+### 6.1 Supprimer les seeders
+```bash
+php artisan migrate:fresh
+```
 
 Cela va créer :
 - Toutes les tables nécessaires

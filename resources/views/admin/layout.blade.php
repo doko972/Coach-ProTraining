@@ -15,7 +15,7 @@
                 <h2>Admin - Coach Pro</h2>
             </div>
             <ul class="admin-menu">
-                <li><a href="{{ route('workout.index') }}" class="back-link">← Retour à l'app</a></li>
+                <li><a href="{{ route('workout.index') }}">← Retour à l'app</a></li>
                 <li><a href="{{ route('admin.dashboard') }}"
                         class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a></li>
                 <li><a href="{{ route('admin.programs.index') }}"
@@ -24,6 +24,8 @@
                         class="{{ request()->routeIs('admin.exercises.*') ? 'active' : '' }}">Exercices</a></li>
                 <li><a href="{{ route('admin.sessions.index') }}"
                         class="{{ request()->routeIs('admin.sessions.*') ? 'active' : '' }}">Séances</a></li>
+                <li><a href="{{ route('admin.user-programs.index') }}"
+                        class="{{ request()->routeIs('admin.user-programs.*') ? 'active' : '' }}">Assignations</a></li>
             </ul>
             <div class="admin-user">
                 <span>{{ Auth::user()->name }}</span>

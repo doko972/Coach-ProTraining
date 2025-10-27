@@ -26,4 +26,10 @@ class Program extends Model
     {
         return $this->hasMany(Week::class);
     }
+    public function assignedUsers()
+    {
+        return $this->belongsToMany(User::class, 'user_programs')
+            ->withPivot('start_date', 'end_date', 'is_current')
+            ->withTimestamps();
+    }
 }

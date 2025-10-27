@@ -54,4 +54,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserNote::class);
     }
+
+    public function assignedPrograms()
+    {
+        return $this->belongsToMany(Program::class, 'user_programs')
+            ->withPivot('start_date', 'end_date', 'is_current')
+            ->withTimestamps();
+    }
+
+    public function currentProgram()
+    {
+        return $this->assignedPrograms()
+            ->wherePivot('is_current', true)
+            ->first();
+    }
 }

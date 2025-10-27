@@ -14,18 +14,28 @@ class WorkoutController extends Controller
     // Page du carnet d'entraînement
     public function index(Request $request)
     {
-        // Récupérer tous les programmes actifs
-        $programs = Program::where('is_active', true)
+        $user = auth()->user();
+
+        // Récupérer uniquement les programmes assignés à cet utilisateur
+        $programs = $user->assignedPrograms()
+            ->where('is_active', true)
             ->orderBy('name')
             ->get();
 
-        // Si aucun programme actif, rediriger avec message
+        // Si l'utilisateur n'a aucun programme assigné
         if ($programs->isEmpty()) {
-            return redirect()->route('workout.index')->with('error', 'Aucun programme disponible.');
+            return view('user.workout.index', [
+                'program' => null,
+                'programs' => collect([]),
+                'message' => 'Aucun programme ne vous a été assigné. Contactez votre coach.'
+            ]);
         }
 
-        // Récupérer le programme sélectionné (via session ou URL)
-        $selectedProgramId = $request->get('program_id') ?? session('selected_program_id') ?? $programs->first()->id;
+        // Récupérer le programme sélectionné
+        $selectedProgramId = $request->get('program_id')
+            ?? session('selected_program_id')
+            ?? $user->currentProgram()?->id
+            ?? $programs->first()->id;
 
         // Sauvegarder le choix en session
         session(['selected_program_id' => $selectedProgramId]);
