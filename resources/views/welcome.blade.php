@@ -21,14 +21,14 @@
 
     <main class="welcome-content">
         <div class="hero-section">
-            <h1 class="hero-title">Bienvenue sur Coach</h1>
+            <h1 class="hero-title">Bienvenue sur Tama Coach</h1>
             <p class="hero-subtitle">Votre application de coaching sportif professionnel</p>
             <p class="hero-description">
                 Suivez vos programmes d'entraînement, gérez vos performances et atteignez vos objectifs avec Coach Pro Training.
             </p>
             
             <div class="hero-buttons">
-                <a href="{{ route('register') }}" class="btn-hero-primary">Commencer maintenant</a>
+                <a href="{{ route('register') }}" class="btn-hero-primary">Creer un compte</a>
                 <a href="{{ route('login') }}" class="btn-hero-secondary">Se connecter</a>
             </div>
         </div>
@@ -75,16 +75,16 @@
             </div>
         </div>
 
-        <div class="cta-section">
+        {{-- <div class="cta-section">
             <h2>Prêt à commencer ?</h2>
             <p>Rejoignez Coach Pro Training et transformez votre entraînement dès aujourd'hui.</p>
             <a href="{{ route('register') }}" class="btn-cta">Créer mon compte gratuitement</a>
-        </div>
+        </div> --}}
     </main>
 
     <footer class="footer">
         <div class="footer-content">
-            <p><strong>Coach</strong> - Pro Training</p>
+            <p><strong>Tama Coach</strong> - Pro Training</p>
             <p style="margin-top: 0.5rem; font-size: 0.85rem;">Pas d'Entraînement, pas de résultats</p>
             <div class="footer-links">
                 <a href="#" class="footer-link">À propos</a>
