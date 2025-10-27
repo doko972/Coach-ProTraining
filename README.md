@@ -138,6 +138,7 @@ composer install
 ### 3. Installer les dépendances JavaScript
 ```bash
 npm install
+npm install sass --save-dev
 ```
 
 ### 4. Configuration de l'environnement
