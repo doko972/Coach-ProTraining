@@ -5,7 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') - Coach Pro Training</title>
+    <title>@yield('title') Tama Coach Pro Training</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon.png') }}">
+    {{-- <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}"> --}}
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
+
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -13,7 +19,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>Coach - Pro Training</h2>
+                <img src="{{ asset('images/logo.png') }}" alt="Coach - Pro Training" class="logo-img">
             </div>
             <ul class="nav-menu">
                 <li><a class="nav-link" href="{{ route('workout.index') }}">Carnet</a></li>

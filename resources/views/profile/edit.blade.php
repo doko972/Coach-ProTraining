@@ -1,6 +1,6 @@
 @extends('profile.layout')
 
-@section('title', 'Mon Profil')
+@section('title', 'Profil')
 
 @section('content')
 <div class="profile-page">
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn-save">Sauvegarder</button>
+                        <button type="submit" class="btn-primary">Sauvegarder</button>
 
                         @if (session('status') === 'profile-updated')
                             <p class="success-message">Profil mis à jour avec succès.</p>
@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn-save">Sauvegarder</button>
+                        <button type="submit" class="btn-primary">Sauvegarder</button>
 
                         @if (session('status') === 'password-updated')
                             <p class="success-message">Mot de passe mis à jour avec succès.</p>

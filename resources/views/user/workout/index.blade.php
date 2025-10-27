@@ -1,6 +1,6 @@
 @extends('user.layout')
 
-@section('title', 'Carnet d\'Entraînement')
+@section('title', 'Carnet d\'Entraînement ')
 
 @section('content')
     <div class="page active" id="carnet">
@@ -25,26 +25,6 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <!-- Stats -->
-                    {{-- <div class="workout-stats-card">
-                        <div class="stat-card-workout">
-                            <div class="stat-value" id="totalVolume">0</div>
-                            <div class="stat-label">Volume total (kg)</div>
-                        </div>
-                        <div class="stat-card-workout">
-                            <div class="stat-value" id="totalSessions">0</div>
-                            <div class="stat-label">Séances cette semaine</div>
-                        </div>
-                        <div class="stat-card-workout">
-                            <div class="stat-value" id="weekSessions">0/3</div>
-                            <div class="stat-label">Progression</div>
-                        </div>
-                        <div class="stat-card-workout">
-                            <div class="stat-value" id="progression">0%</div>
-                            <div class="stat-label">Objectif</div>
-                        </div>
-                    </div> --}}
 
                     <h2>{{ $program->name }}</h2>
 
@@ -160,70 +140,7 @@
                     <button class="btn-save-notes" onclick="saveNotes()">Sauvegarder les notes</button>
                 </div>
             </div>
-        </div>
-        <!-- Bouton flottant Chronomètre -->
-        <button onclick="openChronoModal()" class="floating-chrono-btn" id="floatingChronoBtn"
-            title="Ouvrir le chronomètre">
-            <span class="floating-icon" id="floatingIcon">⏱️</span>
-            <span class="floating-text" id="floatingText">Chrono</span>
-            <span class="floating-timer" id="floatingTimer" style="display: none;">00:00</span>
-        </button>
 
-        <!-- Modal Chronomètre -->
-        <div id="chronoModal" class="chrono-modal" style="display: none;">
-            <div class="chrono-modal-overlay" onclick="closeChronoModal()"></div>
-            <div class="chrono-modal-content">
-                <div class="chrono-modal-header">
-                    <h3>⏱️ Chronomètre de Repos</h3>
-                    <button onclick="closeChronoModal()" class="chrono-close-btn">✕</button>
-                </div>
-
-                <div class="chrono-modal-body">
-                    <!-- Timer Display -->
-                    <div class="chrono-display">
-                        <div id="modalTimerDisplay" class="timer-display">00:00</div>
-                        <div id="modalTimerStatus" class="timer-status">Prêt</div>
-                    </div>
-
-                    <!-- Boutons de contrôle -->
-                    <div class="chrono-controls">
-                        <button onclick="modalStartTimer()" id="modalStartBtn" class="chrono-btn chrono-btn-start">▶
-                            Démarrer</button>
-                        <button onclick="modalPauseTimer()" id="modalPauseBtn" class="chrono-btn chrono-btn-pause"
-                            style="display: none;">⏸ Pause</button>
-                        <button onclick="modalResumeTimer()" id="modalResumeBtn" class="chrono-btn chrono-btn-resume"
-                            style="display: none;">▶ Reprendre</button>
-                        <button onclick="modalStopTimer()" id="modalStopBtn" class="chrono-btn chrono-btn-stop">⏹
-                            Stop</button>
-                    </div>
-
-                    <!-- Temps prédéfinis -->
-                    <div class="chrono-presets">
-                        <button onclick="modalSetTimer(30)" class="preset-btn">30s</button>
-                        <button onclick="modalSetTimer(45)" class="preset-btn">45s</button>
-                        <button onclick="modalSetTimer(60)" class="preset-btn">1min</button>
-                        <button onclick="modalSetTimer(90)" class="preset-btn">1m30</button>
-                        <button onclick="modalSetTimer(120)" class="preset-btn">2min</button>
-                        <button onclick="modalSetTimer(180)" class="preset-btn">3min</button>
-                    </div>
-
-                    <!-- Timer personnalisé -->
-                    <div class="chrono-custom">
-                        <input type="number" id="modalCustomMinutes" placeholder="Min" min="0" max="59"
-                            class="time-input">
-                        <span>:</span>
-                        <input type="number" id="modalCustomSeconds" placeholder="Sec" min="0" max="59"
-                            class="time-input">
-                        <button onclick="modalSetCustomTimer()" class="chrono-btn-custom">Définir</button>
-                    </div>
-
-                    <!-- Historique compact -->
-                    <div class="chrono-history-compact">
-                        <h4>Dernières séries</h4>
-                        <div id="modalHistory" class="history-list-compact"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -453,3 +370,66 @@
         </script>
     @endpush
 @endsection
+<!-- Bouton flottant Chronomètre -->
+<button onclick="openChronoModal()" class="floating-chrono-btn" id="floatingChronoBtn" title="Ouvrir le chronomètre">
+    <span class="floating-icon" id="floatingIcon">⏱️</span>
+    <span class="floating-text" id="floatingText">Chrono</span>
+    <span class="floating-timer" id="floatingTimer" style="display: none;">00:00</span>
+</button>
+
+<!-- Modal Chronomètre -->
+<div id="chronoModal" class="chrono-modal" style="display: none;">
+    <div class="chrono-modal-overlay" onclick="closeChronoModal()"></div>
+    <div class="chrono-modal-content">
+        <div class="chrono-modal-header">
+            <h3>⏱️ Chronomètre de Repos</h3>
+            <button onclick="closeChronoModal()" class="chrono-close-btn">✕</button>
+        </div>
+
+        <div class="chrono-modal-body">
+            <!-- Timer Display -->
+            <div class="chrono-display">
+                <div id="modalTimerDisplay" class="timer-display">00:00</div>
+                <div id="modalTimerStatus" class="timer-status">Prêt</div>
+            </div>
+
+            <!-- Boutons de contrôle -->
+            <div class="chrono-controls">
+                <button onclick="modalStartTimer()" id="modalStartBtn" class="chrono-btn chrono-btn-start">▶
+                    Démarrer</button>
+                <button onclick="modalPauseTimer()" id="modalPauseBtn" class="chrono-btn chrono-btn-pause"
+                    style="display: none;">⏸ Pause</button>
+                <button onclick="modalResumeTimer()" id="modalResumeBtn" class="chrono-btn chrono-btn-resume"
+                    style="display: none;">▶ Reprendre</button>
+                <button onclick="modalStopTimer()" id="modalStopBtn" class="chrono-btn chrono-btn-stop">⏹
+                    Stop</button>
+            </div>
+
+            <!-- Temps prédéfinis -->
+            <div class="chrono-presets">
+                <button onclick="modalSetTimer(30)" class="preset-btn">30s</button>
+                <button onclick="modalSetTimer(45)" class="preset-btn">45s</button>
+                <button onclick="modalSetTimer(60)" class="preset-btn">1min</button>
+                <button onclick="modalSetTimer(90)" class="preset-btn">1m30</button>
+                <button onclick="modalSetTimer(120)" class="preset-btn">2min</button>
+                <button onclick="modalSetTimer(180)" class="preset-btn">3min</button>
+            </div>
+
+            <!-- Timer personnalisé -->
+            <div class="chrono-custom">
+                <input type="number" id="modalCustomMinutes" placeholder="Min" min="0" max="59"
+                    class="time-input">
+                <span>:</span>
+                <input type="number" id="modalCustomSeconds" placeholder="Sec" min="0" max="59"
+                    class="time-input">
+                <button onclick="modalSetCustomTimer()" class="chrono-btn-custom">Définir</button>
+            </div>
+
+            <!-- Historique compact -->
+            <div class="chrono-history-compact">
+                <h4>Dernières séries</h4>
+                <div id="modalHistory" class="history-list-compact"></div>
+            </div>
+        </div>
+    </div>
+</div>
