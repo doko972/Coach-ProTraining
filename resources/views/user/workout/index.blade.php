@@ -157,7 +157,7 @@
         <div class="chrono-modal-overlay" onclick="closeChronoModal()"></div>
         <div class="chrono-modal-content">
             <div class="chrono-modal-header">
-                <h3>⏱️ Chronomètre de Repos</h3>
+                <h3>Chronomètre</h3>
                 <button onclick="closeChronoModal()" class="chrono-close-btn">✕</button>
             </div>
 
